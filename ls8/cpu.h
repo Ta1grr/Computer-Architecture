@@ -5,17 +5,18 @@
 struct cpu {
   // TODO
   // PC
-  unsigned char PC;
+  unsigned char PC; // keeps track where the program is executing
   // registers (array)
-  unsigned char registers[8];
+  unsigned char registers[8]; // where the operands live
   // ram (array)
-  unsigned char memory[256];
+  unsigned char ram[256]; // instructions from the program lives
 };
 
-// ALU operations
+// ALU operations (that perform computations)
 enum alu_op {
-	ALU_MUL
+	ALU_MUL,
 	// Add more here
+  ALU_ADD,
 };
 
 // Instructions
@@ -27,6 +28,7 @@ enum alu_op {
 #define HLT  0b00000001
 #define PRN  0b01000111
 // TODO: more instructions here. These can be used in cpu_run().
+#define ADD  0b10100000
 
 // Function declarations
 

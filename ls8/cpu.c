@@ -34,6 +34,13 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
   switch (op) {
     case ALU_MUL:
       // TODO
+      return regA * regB;
+      break;
+    case ALU_ADD:
+      // TODO
+      return regA + regB;
+      break;
+    default:
       break;
 
     // TODO: implement more ALU ops
@@ -48,6 +55,18 @@ void cpu_run(struct cpu *cpu)
   int running = 1; // True until we get a HLT instruction
 
   while (running) {
+      switch(cpu->ram[cpu->PC]) {
+        // case ADD:
+        //   alu();
+        //   break;
+        case HLT:
+          running = 0;
+          break;
+        default:
+          break;
+      }
+
+      cpu->PC++;
     // TODO
     // 1. Get the value of the current instruction (in address PC).
     // 2. Figure out how many operands this next instruction requires
