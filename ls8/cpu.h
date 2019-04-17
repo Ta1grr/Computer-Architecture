@@ -14,8 +14,8 @@ struct cpu {
 
 // ALU operations (that perform computations)
 enum alu_op {
-	ALU_MUL,
 	// Add more here
+	ALU_MUL,
   ALU_ADD,
 };
 
@@ -24,15 +24,16 @@ enum alu_op {
 // These use binary literals. If these aren't available with your compiler, hex
 // literals should be used.
 
+// TODO: more instructions here. These can be used in cpu_run().
 #define LDI  0b10000010
 #define HLT  0b00000001
 #define PRN  0b01000111
-// TODO: more instructions here. These can be used in cpu_run().
 #define ADD  0b10100000
+#define MUL  0b10100010
 
 // Function declarations
 
-extern void cpu_load(struct cpu *cpu);
+extern void cpu_load(struct cpu *cpu, char *filename);
 extern void cpu_init(struct cpu *cpu);
 extern void cpu_run(struct cpu *cpu);
 
