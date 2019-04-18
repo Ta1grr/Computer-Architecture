@@ -59,12 +59,11 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
   switch (op) {
     case ALU_MUL:
       // TODO
-      // regA * regB;
       cpu->registers[regA] = cpu->registers[regA] * cpu->registers[regB];
       break;
     case ALU_ADD:
       // TODO
-      //return regA + regB;
+      cpu->registers[regA] = (cpu->registers[regA] + cpu->registers[regB]);
       break;
     default:
       break;
@@ -106,12 +105,35 @@ void cpu_run(struct cpu *cpu)
         case MUL:
           alu(cpu, ALU_MUL, operandA, operandB);
           break;
+        case ADD:
+          printf("adding\n");
+          alu(cpu, ALU_ADD, operandA, operandB);
+          break;
         case PUSH:
           cpu->registers[7]--;
           cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
           break;
         case POP:
           cpu->registers[operandA] = cpu->ram[cpu->registers[7]];
+          cpu->registers[7]++;
+          break;
+        case CALL:
+        printf("-- CALL --\n");
+        // Decrementing down from the stack
+          cpu->registers[7]--;
+        // Storing the next address PC in the set of instructions to our stack.
+          cpu->ram[cpu->registers[7]] = cpu->PC += add_to_PC;  
+          printf("PC currently after storing to stack in CALL: %d\n", cpu->PC);   
+        // Setting the PC to the address according to the register after call was made.
+          cpu->PC = cpu->registers[operandA];
+          // cpu->PC--;
+          printf("PC before the break in CALL: %d\n", cpu->PC);
+          break;
+        case RET:
+        printf("-- RET --\n");
+          cpu->PC = cpu->ram[cpu->registers[7]];
+          printf("Pc after RET: %d\n", cpu->PC);
+          // cpu->PC--;
           cpu->registers[7]++;
           break;
         default:
