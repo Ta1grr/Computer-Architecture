@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
   if (argc != 2) {
-    printf("Please enter a file name\n");
+    printf("Please enter a file name, i.e: ./ls8 stack.ls8\n");
     return 1;
   }
 

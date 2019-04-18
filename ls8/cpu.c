@@ -79,7 +79,6 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
  */
 void cpu_run(struct cpu *cpu)
 {
-  // printf("ram[0] %d\n", cpu_ram_read(cpu, 0));
   int running = 1; // True until we get a HLT instruction
 
   unsigned char IR, operandA, operandB, add_to_PC;
@@ -96,7 +95,6 @@ void cpu_run(struct cpu *cpu)
 
       switch(IR) {
         case LDI:
-          // ldi(cpu, operandA, operandB);
           cpu->registers[operandA] = operandB;
           break;
         case PRN:
@@ -107,6 +105,14 @@ void cpu_run(struct cpu *cpu)
           break;
         case MUL:
           alu(cpu, ALU_MUL, operandA, operandB);
+          break;
+        case PUSH:
+          cpu->registers[7]--;
+          cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
+          break;
+        case POP:
+          cpu->registers[operandA] = cpu->ram[cpu->registers[7]];
+          cpu->registers[7]++;
           break;
         default:
           break;
@@ -132,6 +138,6 @@ void cpu_init(struct cpu *cpu)
   cpu->PC = 0;
   memset(cpu->ram, 0, sizeof(cpu->ram)); // array
   memset(cpu->registers, 0, sizeof(cpu->registers)); // array
-  // printf("LDI %d\n", LDI);
+  cpu->registers[7] = 0xF4;
 }
 
