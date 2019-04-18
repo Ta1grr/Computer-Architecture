@@ -106,7 +106,6 @@ void cpu_run(struct cpu *cpu)
           alu(cpu, ALU_MUL, operandA, operandB);
           break;
         case ADD:
-          printf("adding\n");
           alu(cpu, ALU_ADD, operandA, operandB);
           break;
         case PUSH:
@@ -118,22 +117,17 @@ void cpu_run(struct cpu *cpu)
           cpu->registers[7]++;
           break;
         case CALL:
-        printf("-- CALL --\n");
         // Decrementing down from the stack
           cpu->registers[7]--;
         // Storing the next address PC in the set of instructions to our stack.
-          cpu->ram[cpu->registers[7]] = cpu->PC += add_to_PC;  
-          printf("PC currently after storing to stack in CALL: %d\n", cpu->PC);   
+          cpu->ram[cpu->registers[7]] = cpu->PC += add_to_PC;  // 8 
         // Setting the PC to the address according to the register after call was made.
           cpu->PC = cpu->registers[operandA];
-          // cpu->PC--;
-          printf("PC before the break in CALL: %d\n", cpu->PC);
+          cpu->PC -= 2; // To offset the add_to_PC;
           break;
         case RET:
-        printf("-- RET --\n");
           cpu->PC = cpu->ram[cpu->registers[7]];
-          printf("Pc after RET: %d\n", cpu->PC);
-          // cpu->PC--;
+          cpu->PC--; // To offset the add_to_PC;
           cpu->registers[7]++;
           break;
         default:
@@ -141,6 +135,7 @@ void cpu_run(struct cpu *cpu)
       }
 
         cpu->PC += add_to_PC;
+
     // TODO
     // 1. Get the value of the current instruction (in address PC).
     // 2. Figure out how many operands this next instruction requires
